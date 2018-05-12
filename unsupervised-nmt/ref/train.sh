@@ -1,17 +1,21 @@
 #! /bin/sh
 
 model_dir=unsupervised-nmt-enfr
-data_dir=data/unsupervised-nmt-enfr
+data_dir=data/unsupervised-nmt-enfr-dev
 
 src_vocab=${data_dir}/en-vocab.txt
 tgt_vocab=${data_dir}/fr-vocab.txt
 src_emb=${data_dir}/wmt14m.en300.vec
 tgt_emb=${data_dir}/wmt14m.fr300.vec
 
-src=${data_dir}/train.en
-tgt=${data_dir}/train.fr
-src_trans=${data_dir}/train.en.m1
-tgt_trans=${data_dir}/train.fr.m1
+# src=${data_dir}/train.en
+# tgt=${data_dir}/train.fr
+# src_trans=${data_dir}/train.en.m1
+# tgt_trans=${data_dir}/train.fr.m1
+src=${data_dir}/train.en.10k
+tgt=${data_dir}/train.fr.10k
+src_trans=${data_dir}/train.en.10k.m1
+tgt_trans=${data_dir}/train.fr.10k.m1
 
 src_test=${data_dir}/newstest2014.en.tok
 tgt_test=${data_dir}/newstest2014.fr.tok
