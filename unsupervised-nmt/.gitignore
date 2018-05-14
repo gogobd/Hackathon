@@ -1,0 +1,9 @@
+.Python
+/bin/
+.DS_Store
+/include/
+/lib/
+pip-selfcheck.json
+/data/
+/scores-*.txt
+/models/

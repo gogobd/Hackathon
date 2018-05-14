@@ -1,6 +1,6 @@
 #!/bin/bash
 
-model_dir=wmt15-de-en.model
+model_dir=models/wmt15-de-en.model
 data_dir=data/wmt15-de-en
 
 src_vocab=${data_dir}/en-vocab.txt
@@ -18,7 +18,7 @@ src_test_trans=${data_dir}/newstest2013.en.m1
 tgt_test_trans=${data_dir}/newstest2013.de.m1
 
 timestamp=$(date +%s)
-score_file=scores-${timestamp}.txt
+score_file=${model_dir}/scores-${timestamp}.txt
 
 > ${score_file}
 
