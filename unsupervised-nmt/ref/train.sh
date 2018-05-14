@@ -3,8 +3,8 @@
 model_dir=models/wmt15-de-en.model
 data_dir=data/wmt15-de-en
 
-src_vocab=${data_dir}/en-vocab.txt
-tgt_vocab=${data_dir}/de-vocab.txt
+src_vocab=${data_dir}/en-vocab.50k.txt
+tgt_vocab=${data_dir}/de-vocab.50k.txt
 src_emb=${data_dir}/en-embedding.emb
 tgt_emb=${data_dir}/de-embedding.emb
 src=${data_dir}/newstest2013.en
