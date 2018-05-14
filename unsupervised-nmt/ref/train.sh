@@ -1,26 +1,21 @@
-#! /bin/sh
+#!/bin/bash
 
-model_dir=unsupervised-nmt-enfr
-data_dir=data/unsupervised-nmt-enfr-dev
+model_dir=wmt15-de-en.model
+data_dir=data/wmt15-de-en
 
 src_vocab=${data_dir}/en-vocab.txt
-tgt_vocab=${data_dir}/fr-vocab.txt
-src_emb=${data_dir}/wmt14m.en300.vec
-tgt_emb=${data_dir}/wmt14m.fr300.vec
+tgt_vocab=${data_dir}/de-vocab.txt
+src_emb=${data_dir}/en-embedding.emb
+tgt_emb=${data_dir}/de-embedding.emb
+src=${data_dir}/newstest2013.en
+tgt=${data_dir}/newstest2013.de
+src_trans=${data_dir}/news-commentary-v10.de-en.en
+tgt_trans=${data_dir}/news-commentary-v10.de-en.de
+src_test=${data_dir}/newstest2013.en
+tgt_test=${data_dir}/newstest2013.de
 
-# src=${data_dir}/train.en
-# tgt=${data_dir}/train.fr
-# src_trans=${data_dir}/train.en.m1
-# tgt_trans=${data_dir}/train.fr.m1
-src=${data_dir}/train.en.10k
-tgt=${data_dir}/train.fr.10k
-src_trans=${data_dir}/train.en.10k.m1
-tgt_trans=${data_dir}/train.fr.10k.m1
-
-src_test=${data_dir}/newstest2014.en.tok
-tgt_test=${data_dir}/newstest2014.fr.tok
-src_test_trans=${data_dir}/newstest2014.en.tok.m1
-tgt_test_trans=${data_dir}/newstest2014.fr.tok.m1
+src_test_trans=${data_dir}/newstest2013.en.m1
+tgt_test_trans=${data_dir}/newstest2013.de.m1
 
 timestamp=$(date +%s)
 score_file=scores-${timestamp}.txt
@@ -37,7 +32,7 @@ score_test()
 
 score_test
 
-for i in $(seq 2 5); do
+for i in $(seq 1 10); do
     # Train for one epoch.
     python ref/training.py \
            --model_dir ${model_dir} \

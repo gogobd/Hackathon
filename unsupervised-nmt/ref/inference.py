@@ -9,8 +9,8 @@ from opennmt import constants
 from opennmt.utils.misc import count_lines, print_bytes
 
 
-print('# inference.py #######################################################')
-print(' '.join(sys.argv))
+# print('# inference.py #######################################################')
+# print(' '.join(sys.argv))
 
 parser = argparse.ArgumentParser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -29,7 +29,7 @@ args = parser.parse_args()
 
 
 # Step 1
-print('Step 1: Reading data')
+# print('Step 1: Reading data')
 
 
 def load_data(input_file, input_vocab):
@@ -76,7 +76,7 @@ src = src_iterator.get_next()
 
 
 # Step 2
-print('Step 2: Rebuilding the model')
+# print('Step 2: Rebuilding the model')
 
 
 hidden_size = 512
@@ -96,7 +96,7 @@ with tf.variable_scope("tgt" if args.direction == 1 else "src"):
 
 
 # Step 3
-print('Step 3: Encoding and decoding')
+# print('Step 3: Encoding and decoding')
 
 
 def encode():
@@ -154,7 +154,7 @@ length = sampled_length
 
 
 # Step 4
-print('Step 4: Loading and translating')
+# print('Step 4: Loading and translating')
 
 
 saver = tf.train.Saver()

@@ -788,3 +788,8 @@ where M1 is the unsupervised word-by-word translation model.
 ---
 
 *Congratulations for completing the tutorial! Wether you implemented the functions on your own or went through the provided implementation, we hope that you learned new things on TensorFlow, OpenNMT-tf and adversarial training applied to unsupervised MT.*
+
+
+German-English dataset:
+wget "https://s3.amazonaws.com/opennmt-trainingdata/wmt15-de-en.tgz"
+
