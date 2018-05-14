@@ -13,8 +13,8 @@ from opennmt.utils.losses import cross_entropy_sequence_loss
 from opennmt.utils.misc import count_lines
 
 
-print('# training.py ########################################################')
-print(' '.join(sys.argv))
+sys.stderr.write('# training.py ########################################################\n')    # noqa: E501
+sys.stderr.write(' '.join(sys.argv) + '\n')
 
 parser = argparse.ArgumentParser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -39,7 +39,7 @@ args = parser.parse_args()
 
 
 # Step 1
-print('Step 1: Reading the data')
+sys.stderr.write('Step 1: Reading the data\n')
 
 
 def load_vocab(vocab_file):
@@ -123,7 +123,7 @@ with tf.device("/cpu:0"):  # Input pipeline should always be place on the CPU.
 
 
 # Step 2
-print('Step 2: Noise model')
+sys.stderr.write('Step 2: Noise model\n')
 
 
 def add_noise_python(words, dropout=0.1, k=3):
@@ -185,7 +185,7 @@ def add_noise(ids, sequence_length):
 
 
 # Step 3
-print('Step 3: Creating embeddings')
+sys.stderr.write('Step 3: Creating embeddings\n')
 
 
 def create_embeddings(vocab_size, depth=300):
@@ -229,7 +229,7 @@ with tf.variable_scope("tgt"):
 
 
 # Step 4
-print('Step 4: Encoding noisy inputs')
+sys.stderr.write('Step 4: Encoding noisy inputs\n')
 
 
 hidden_size = 512
@@ -266,7 +266,7 @@ tgt_encoder_cross = add_noise_and_encode(
 
 
 # Step 5
-print('Step 5: Denoising noisy encoding')
+sys.stderr.write('Step 5: Denoising noisy encoding\n')
 
 
 decoder = onmt.decoders.AttentionalRNNDecoder(
@@ -315,7 +315,7 @@ l_cd_tgt = denoise(tgt, tgt_emb, src_encoder_cross, tgt_gen, reuse=True)
 
 
 # Step 6
-print('Step 6: Discriminating encodings')
+sys.stderr.write('Step 6: Discriminating encodings\n')
 
 
 def binary_cross_entropy(x, y, smoothing=0, epsilon=1e-12):
@@ -399,7 +399,7 @@ with tf.variable_scope("discriminator"):
 
 
 # Step 7
-print('Step 7: Optimization and training loop')
+sys.stderr.write('Step 7: Optimization and training loop\n')
 
 
 lambda_auto = 1

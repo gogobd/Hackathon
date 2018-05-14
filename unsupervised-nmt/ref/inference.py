@@ -9,8 +9,8 @@ from opennmt import constants
 from opennmt.utils.misc import count_lines, print_bytes
 
 
-# print('# inference.py #######################################################')
-# print(' '.join(sys.argv))
+sys.stderr.write('# inference.py #######################################################\n')    # noqa: E501
+sys.stderr.write(' '.join(sys.argv) + '\n')
 
 parser = argparse.ArgumentParser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -29,7 +29,7 @@ args = parser.parse_args()
 
 
 # Step 1
-# print('Step 1: Reading data')
+sys.stderr.write('Step 1: Reading data\n')
 
 
 def load_data(input_file, input_vocab):
@@ -76,7 +76,7 @@ src = src_iterator.get_next()
 
 
 # Step 2
-# print('Step 2: Rebuilding the model')
+sys.stderr.write('Step 2: Rebuilding the model\n')
 
 
 hidden_size = 512
@@ -96,7 +96,7 @@ with tf.variable_scope("tgt" if args.direction == 1 else "src"):
 
 
 # Step 3
-# print('Step 3: Encoding and decoding')
+sys.stderr.write('Step 3: Encoding and decoding\n')
 
 
 def encode():
@@ -119,7 +119,8 @@ def decode(encoder_output):
       encoder_output: The output of encode().
 
     Returns:
-      A tuple with: the decoded word ids and the length of each decoded sequence.
+      A tuple with: the decoded word ids and the length
+      of each decoded sequence.
     """
     batch_size = tf.shape(src["length"])[0]
     start_tokens = tf.fill([batch_size], constants.START_OF_SENTENCE_ID)
@@ -154,7 +155,7 @@ length = sampled_length
 
 
 # Step 4
-# print('Step 4: Loading and translating')
+sys.stderr.write('Step 4: Loading and translating\n')
 
 
 saver = tf.train.Saver()
