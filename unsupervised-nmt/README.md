@@ -797,5 +797,5 @@ train:
 $ ./ref/training.py --model_dir wmt15-de-en.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_trans data/wmt15-de-en/news-commentary-v10.de-en.en --tgt_trans data/wmt15-de-en/news-commentary-v10.de-en.de --src_vocab data/wmt15-de-en/en-vocab.50k.txt --tgt_vocab data/wmt15-de-en/de-vocab.50k.txt --src_emb data/wmt15-de-en/en-embedding.emb --tgt_emb data/wmt15-de-en/de-embedding.emb
 
 infer:
-$ ./ref/inference.py --model_dir models/wmt15-de-en.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_vocab data/wmt15-de-en/en-vocab.txt --tgt_vocab data/wmt15-de-en/de-vocab.txt --direction 1
+$ ./ref/inference.py --model_dir models/wmt15-de-en.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_vocab data/wmt15-de-en/en-vocab.50k.txt --tgt_vocab data/wmt15-de-en/de-vocab.50k.txt --direction 1
 $ ./ref/inference.py --model_dir wmt15-de-en.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_vocab data/wmt15-de-en/en-vocab.50k.txt --tgt_vocab data/wmt15-de-en/de-vocab.50k.txt --direction 2
