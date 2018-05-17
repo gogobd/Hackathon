@@ -794,8 +794,26 @@ German-English dataset:
 wget "https://s3.amazonaws.com/opennmt-trainingdata/wmt15-de-en.tgz"
 
 train:
-$ ./ref/training.py --model_dir wmt15-de-en.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_trans data/wmt15-de-en/news-commentary-v10.de-en.en --tgt_trans data/wmt15-de-en/news-commentary-v10.de-en.de --src_vocab data/wmt15-de-en/en-vocab.50k.txt --tgt_vocab data/wmt15-de-en/de-vocab.50k.txt --src_emb data/wmt15-de-en/en-embedding.emb --tgt_emb data/wmt15-de-en/de-embedding.emb
+$ ./ref/training.py --model_dir models/wmt15-de-en.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_trans data/wmt15-de-en/news-commentary-v10.de-en.en --tgt_trans data/wmt15-de-en/news-commentary-v10.de-en.de --src_vocab data/wmt15-de-en/en-vocab.50k.txt --tgt_vocab data/wmt15-de-en/de-vocab.50k.txt --src_emb data/wmt15-de-en/en-embedding.emb --tgt_emb data/wmt15-de-en/de-embedding.emb
 
 infer:
 $ ./ref/inference.py --model_dir models/wmt15-de-en.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_vocab data/wmt15-de-en/en-vocab.50k.txt --tgt_vocab data/wmt15-de-en/de-vocab.50k.txt --direction 1
 $ ./ref/inference.py --model_dir wmt15-de-en.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_vocab data/wmt15-de-en/en-vocab.50k.txt --tgt_vocab data/wmt15-de-en/de-vocab.50k.txt --direction 2
+
+
+--- clean dataset --- windows ---
+
+src=${data_dir}/train.en
+tgt=${data_dir}/train.fr
+src_trans=${data_dir}/train.en.m1
+tgt_trans=${data_dir}/train.fr.m1
+
+src_test=${data_dir}/newstest2014.en.tok
+tgt_test=${data_dir}/newstest2014.fr.tok
+src_test_trans=${data_dir}/newstest2014.en.tok.m1
+tgt_test_trans=${data_dir}/newstest2014.fr.tok.m1
+
+
+./ref/training.py --model_dir models/wmt15-de-en.clean.model --src data/wmt15-de-en/train.en.very_clean --tgt data/wmt15-de-en/train.de.very_clean --src_trans data/wmt15-de-en/train_all.en.very_clean.m1 --tgt_trans data/wmt15-de-en/train_all.de.very_clean.m1 --src_vocab data/wmt15-de-en/en-vocab.50k.clean --tgt_vocab data/wmt15-de-en/de-vocab.50k.clean --src_emb data/wmt15-de-en/en-embedding.emb --tgt_emb data/wmt15-de-en/de-embedding.emb
+
+./ref/inference.py --model_dir models/wmt15-de-en.clean.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_vocab data/wmt15-de-en/en-vocab.50k.txt --tgt_vocab data/wmt15-de-en/de-vocab.50k.txt --direction 1

@@ -28,14 +28,15 @@ with open(sys.argv[1], 'rb') as infile:
                 )
             )
 
-list = [
+l = [
     '<blank>',
     '<s>',
     '</s>',
 ]
-list += [i[0] for i in wordcount.most_common()]
-sys.stdout.write(
+l += [i[0].encode('utf-8').decode('utf-8') for i in wordcount.most_common()]
+
+sys.stdout.buffer.write(
     '\n'.join(
-        list
-    )
+        l
+    ).encode('utf-8')
 )

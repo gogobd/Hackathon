@@ -102,7 +102,13 @@ def load_data(input_file,
         "trans_length": tf.shape(y)[0]})
 
     # Filter out invalid examples.
-    dataset = dataset.filter(lambda x: tf.greater(x["length"], 0))
+    dataset = dataset.filter(
+        lambda x: tf.logical_and(
+            tf.greater(x["length"], 0),
+            tf.less(x["length"], 256),
+            name=None,
+        )
+    )
 
     # Batch the dataset using a bucketing strategy.
     dataset = dataset.apply(tf.contrib.data.group_by_window(
