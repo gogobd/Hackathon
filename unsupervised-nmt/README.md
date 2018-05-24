@@ -813,7 +813,8 @@ tgt_test=${data_dir}/newstest2014.fr.tok
 src_test_trans=${data_dir}/newstest2014.en.tok.m1
 tgt_test_trans=${data_dir}/newstest2014.fr.tok.m1
 
+Train first batch
+> python ref\training.py --model_dir models/wmt15-de-en.clean.model --src data/wmt15-de-en/train.en.very_clean --tgt data/wmt15-de-en/train.de.very_clean --src_trans data/wmt15-de-en/train.en.very_clean.m1 --tgt_trans data/wmt15-de-en/train.de.very_clean.m1 --src_vocab data/wmt15-de-en/en-vocab.50k.very_clean --tgt_vocab data/wmt15-de-en/de-vocab.50k.very_clean --src_emb data/wmt15-de-en/en-embedding.emb --tgt_emb data/wmt15-de-en/de-embedding.emb
 
-./ref/training.py --model_dir models/wmt15-de-en.clean.model --src data/wmt15-de-en/train.en.very_clean --tgt data/wmt15-de-en/train.de.very_clean --src_trans data/wmt15-de-en/train_all.en.very_clean.m1 --tgt_trans data/wmt15-de-en/train_all.de.very_clean.m1 --src_vocab data/wmt15-de-en/en-vocab.50k.clean --tgt_vocab data/wmt15-de-en/de-vocab.50k.clean --src_emb data/wmt15-de-en/en-embedding.emb --tgt_emb data/wmt15-de-en/de-embedding.emb
-
-./ref/inference.py --model_dir models/wmt15-de-en.clean.model --src data/wmt15-de-en/newstest2013.en --tgt data/wmt15-de-en/newstest2013.de --src_vocab data/wmt15-de-en/en-vocab.50k.txt --tgt_vocab data/wmt15-de-en/de-vocab.50k.txt --direction 1
+Infer first batch -> .m2
+> python ref\inference.py --model_dir models/wmt15-de-en.clean.model --src data/wmt15-de-en/train.en.very_clean --tgt data/wmt15-de-en/train.de.very_clean --src_vocab data/wmt15-de-en/en-vocab.50k.very_clean --tgt_vocab data/wmt15-de-en/de-vocab.50k.very_clean --direction 1 > data/wmt15-de-en/train.en.very_clean.m2

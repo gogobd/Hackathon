@@ -32,7 +32,7 @@ score_test()
 
 score_test
 
-for i in $(seq 1 10); do
+for i in $(seq 2 5); do
     # Train for one epoch.
     python ref/training.py \
            --model_dir ${model_dir} \

@@ -2,12 +2,15 @@ from __future__ import print_function
 
 import argparse
 import sys
+import time
 
 import opennmt as onmt
 import tensorflow as tf
 from opennmt import constants
 from opennmt.utils.misc import count_lines, print_bytes
 
+
+BATCH_SIZE = 128
 
 sys.stderr.write('# inference.py #######################################################\n')    # noqa: E501
 sys.stderr.write(' '.join(sys.argv) + '\n')
@@ -24,7 +27,6 @@ parser.add_argument("--src_vocab", required=True, help="Source vocabulary.")
 parser.add_argument("--tgt_vocab", required=True, help="Target vocabulary.")
 parser.add_argument("--direction", required=True, type=int,
                     help="1 = translation source, 2 = translate target.")
-
 args = parser.parse_args()
 
 
@@ -45,12 +47,20 @@ def load_data(input_file, input_vocab):
     dataset = tf.data.TextLineDataset(input_file)
     dataset = dataset.map(lambda x: tf.string_split([x]).values)
     dataset = dataset.map(input_vocab.lookup)
-    dataset = dataset.map(lambda x: {
-        "ids": x,
-        "length": tf.shape(x)[0]})
-    dataset = dataset.padded_batch(64, {
-        "ids": [None],
-        "length": []})
+    dataset = dataset.map(
+        lambda x: {
+            "ids": x,
+            "length": tf.shape(x)[0],
+            },
+        )
+    dataset = dataset.padded_batch(
+        BATCH_SIZE,
+        {
+            "ids": [None],
+            "length": [],
+        },
+    )
+    # dataset = dataset.prefetch(BATCH_SIZE * 10000)
     return dataset.make_initializable_iterator()
 
 
@@ -70,7 +80,8 @@ src_vocab = tf.contrib.lookup.index_table_from_file(
     num_oov_buckets=1)
 
 with tf.device("cpu:0"):
-    src_iterator = load_data(src_file, src_vocab)
+   src_iterator = load_data(src_file, src_vocab)
+# src_iterator = load_data(src_file, src_vocab)
 
 src = src_iterator.get_next()
 
@@ -107,9 +118,13 @@ def encode():
     """
     with tf.variable_scope("encoder"):
         return encoder.encode(
-            tf.nn.embedding_lookup(src_emb, src["ids"]),
+            tf.nn.embedding_lookup(
+                src_emb,
+                src["ids"]
+            ),
             sequence_length=src["length"],
-            mode=tf.estimator.ModeKeys.PREDICT)
+            mode=tf.estimator.ModeKeys.PREDICT
+        )
 
 
 def decode(encoder_output):
@@ -133,12 +148,13 @@ def decode(encoder_output):
             end_token,
             vocab_size=tgt_vocab_size,
             initial_state=encoder_output[1],
-            beam_width=5,
-            maximum_iterations=200,
+            beam_width=2,  # 5,
+            maximum_iterations=256,
             output_layer=tgt_gen,
             mode=tf.estimator.ModeKeys.PREDICT,
             memory=encoder_output[0],
-            memory_sequence_length=encoder_output[2])
+            memory_sequence_length=encoder_output[2],
+        )
         return sampled_ids, sampled_length
 
 
@@ -170,11 +186,22 @@ def session_init_op(_scaffold, sess):
 scaffold = tf.train.Scaffold(init_fn=session_init_op)
 session_creator = tf.train.ChiefSessionCreator(scaffold=scaffold)
 
+line = 0
+last_time = time.time()
 with tf.train.MonitoredSession(session_creator=session_creator) as sess:
     sess.run(src_iterator.initializer)
     while not sess.should_stop():
+        now_time = time.time()
+        sys.stderr.write(
+            'Line {0} time {1}s/l\n'.format(
+                line,
+                (now_time - last_time) / BATCH_SIZE,
+            )
+        )
+        last_time = time.time()
         _tokens, _length = sess.run([tokens, length])
         for b in range(_tokens.shape[0]):
             pred_toks = _tokens[b][0][:_length[b][0] - 1]
             pred_sent = b" ".join(pred_toks)
-            print_bytes(pred_sent)
+            sys.stdout.buffer.write(pred_sent + b'\n')
+            line += 1

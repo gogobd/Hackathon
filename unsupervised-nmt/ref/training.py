@@ -57,7 +57,7 @@ def load_data(input_file,
               input_vocab,
               translated_vocab,
               batch_size=32,
-              max_seq_len=50,
+              max_seq_len=64,
               num_buckets=5):
     """Returns an iterator over the training data."""
 
@@ -103,9 +103,17 @@ def load_data(input_file,
 
     # Filter out invalid examples.
     dataset = dataset.filter(
-        lambda x: tf.logical_and(
-            tf.greater(x["length"], 0),
-            tf.less(x["length"], 256),
+        lambda x: tf.logical_and( 
+            tf.logical_and(
+                tf.greater(x["length"], 0),
+                tf.less(x["length"], 256),
+                name=None,
+            ),
+            tf.logical_and(
+                tf.greater(x["trans_length"], 0),
+                tf.less(x["trans_length"], 256),
+                name=None,
+            ),
             name=None,
         )
     )

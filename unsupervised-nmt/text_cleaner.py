@@ -11,7 +11,7 @@ if len(sys.argv) != 2:
     sys.exit()
 
 linecount = 0
-max_line_len = 0
+validlinecount = 0
 with open(sys.argv[1], 'rb') as infile:
     for line in infile:
         linecount += 1
@@ -22,17 +22,31 @@ with open(sys.argv[1], 'rb') as infile:
         if length_counter[1] > 32:
             sys.stderr.write(
                 str(length_counter[1]) +
-                ' ' +
-                # '<<< ' +
+                '<<< fragmentation <<<\n' +
                 ' '.join(words) + 
                 '\n\n'
             )
             continue
-        if len(words) > max_line_len:
-            max_line_len = len(words)
+        if len(words) <= 1:
             sys.stderr.write(
-                ' '.join(words) + '\n'
+                '<<< too short <<<\n\n'
             )
+            continue
+        if len(words) >= 256:
+            sys.stderr.write(
+                '<<< too long <<<\n' + 
+                ' '.join(words) + 
+                '\n\n'
+            )
+            continue
+        if len(line) > 1024:
+            sys.stderr.write(
+                '<<< line {0} too long <<<\n\n'.format(linecount) +
+                ' '.join(words) + 
+                '\n\n'
+            )
+            continue            
+        validlinecount += 1
         sys.stdout.buffer.write(
             (' '.join(
                 words
@@ -40,8 +54,8 @@ with open(sys.argv[1], 'rb') as infile:
         )
         if linecount % 5000 == 0:
             sys.stderr.write(
-                "{0} lines seen, maximum length: {1}\n".format(
+                "{0} lines processed, {1} are valid...\n".format(
                     linecount,
-                    max_line_len
+                    validlinecount,
                 )
             )
